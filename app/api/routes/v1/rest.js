@@ -41,4 +41,5 @@ module.exports = function(router) {
     router.post('/session/:sessionId/rating', FeatureCtrl.submitRating);
     router.get('/session/:sessionId/chat', FeatureCtrl.getChatMessageList);
     router.post('/session/:sessionId/chat', FeatureCtrl.addChatMessage);
+    router.post('/session/:sessionId/chatbot', FeatureCtrl.notifyBot);
 };

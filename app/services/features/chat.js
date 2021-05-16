@@ -1,6 +1,8 @@
 'use strict';
 
 const mongoose = require('mongoose');
+const { la } = require('stopword');
+const { last } = require('underscore');
 const Chat = mongoose.model('Chat');
 
 ////
@@ -42,3 +44,18 @@ exports.addChatMessage = async function(sessionId, data) {
     chat.markModified('messageList');
     chat.save();
 };
+
+exports.notifyBot = async function(sessionId, data) {
+    const lastMessage = data.messageList.slice(-1)[0];
+    const query = {
+        "sessionId": sessionId
+    }
+    // TODO: now assume that when the bot get notified
+    // there's already an entry in the database
+    lastMessage.sender = sessionId;
+    let chat = await Chat.findOne(query);
+    chat.messageList.push(lastMessage);
+    chat.markModified('messageList');
+    chat.save();
+    return lastMessage; 
+}

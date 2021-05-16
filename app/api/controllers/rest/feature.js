@@ -166,3 +166,12 @@ exports.addChatMessage = function(req, res) {
         'Could not save rating data.'
     );
 };
+
+exports.notifyBot = function(req, res) {
+    const sessionId = req.params.sessionId;
+    const data = req.body;
+    resolve(req, res,
+        chat.notifyBot(sessionId, data),
+        'Bot does not know how to response'
+        );
+};

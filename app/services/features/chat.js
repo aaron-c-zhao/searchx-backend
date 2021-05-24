@@ -51,14 +51,17 @@ exports.notifyBot = async function(sessionId, data) {
     const query = {
         "sessionId": sessionId
     }
-    // TODO: now assume that when the bot get notified
-    // there's already an entry in the database
     let reply = chatbot.parse(sessionId, message);
-    if (reply !== null) {
-        let chat = await Chat.findOne(query);
-        chat.messageList.push(reply);
+    if (reply === null) return null;
+
+    let chat = await Chat.findOne(query);
+    return reply.then(msg => {
+        chat.messageList.push(msg);
         chat.markModified('messageList'); 
         chat.save();
-    }
-    return reply
+        return msg;
+    })
+    .catch(msg => {
+        return msg;
+    })
 }

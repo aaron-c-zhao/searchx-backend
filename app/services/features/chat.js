@@ -56,7 +56,8 @@ exports.notifyBot = async function(sessionId, data) {
 
     let chat = await Chat.findOne(query);
     return reply.then(msg => {
-        chat.messageList.push(msg);
+        console.log(msg);
+        chat.messageList.push(Object.assign({}, msg, {type:"text"}));
         chat.markModified('messageList'); 
         chat.save();
         return msg;

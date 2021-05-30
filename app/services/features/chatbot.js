@@ -1,7 +1,7 @@
 'use strict'
 var request = require('superagent')
 
-let replyMsg = function(sessionId, text){ 
+let replyMsg = function(sessionId, text, type){ 
     return {
         author: "bot",
         data: {
@@ -9,7 +9,7 @@ let replyMsg = function(sessionId, text){
             text: text
         },
         sender: sessionId,
-        type: "text"
+        type: type 
     }
 }
 
@@ -44,10 +44,16 @@ module.exports.parse = function(sessionId, message) {
                     .end((err, res) => {
                         if (err) {
                             console.log(err);
-                            reject(replyMsg(sessionId, "Bot is speechless."));
+                            reject(replyMsg(sessionId, "Bot is speechless.", "text"));
                         }
                         else {
-                            resolve(replyMsg(sessionId, res.body[0].text));
+                            let text = res.body[0].text;
+                            let type = "text"
+                            if (res.body[0].custom) {
+                                text = res.body[0].custom.text
+                                type = res.body[0].custom.type
+                            }
+                            resolve(replyMsg(sessionId, text, type));
                         }
                     })
                 });

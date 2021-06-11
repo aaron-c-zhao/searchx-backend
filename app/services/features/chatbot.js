@@ -48,13 +48,18 @@ module.exports.parse = function(sessionId, message) {
                             reject(replyMsg(sessionId, "Bot is speechless.", "text"));
                         }
                         else {
-                            let text = res.body[0].text;
-                            let type = "text"
-                            if (res.body[0].custom) {
-                                text = res.body[0].custom.text
-                                type = res.body[0].custom.type
+                            if (!res.body[0]) {
+                                resolve(null);
+                            } 
+                            else {
+                                let text = res.body[0].text;
+                                let type = "text"
+                                if (res.body[0].custom) {
+                                    text = res.body[0].custom.text
+                                    type = res.body[0].custom.type
+                                }
+                                resolve(replyMsg(sessionId, text, type));
                             }
-                            resolve(replyMsg(sessionId, text, type));
                         }
                     })
                 });

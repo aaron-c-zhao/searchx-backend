@@ -52,14 +52,15 @@ exports.notifyBot = async function(sessionId, data) {
         "sessionId": sessionId
     }
     let reply = chatbot.parse(sessionId, message);
-    if (reply === null) return null;
 
     let chat = await Chat.findOne(query);
     return reply.then(msg => {
         console.log(msg);
-        chat.messageList.push(Object.assign({}, msg, {type:"text"}));
-        chat.markModified('messageList'); 
-        chat.save();
+        if (msg !== null) {
+            chat.messageList.push(Object.assign({}, msg, {type:"text"}));
+            chat.markModified('messageList'); 
+            chat.save();
+        }
         return msg;
     })
     .catch(msg => {

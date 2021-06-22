@@ -13,23 +13,6 @@ let replyMsg = function(sessionId, text, type){
     }
 }
 
-
-/*
-parser message prefix.
-@bot: bot is the recepiant
-none: bot is not the recepiant
-*/
-// function _parsePrefix(message) {
-//     let reg = /^@bot (.*)/i;
-//     let content = null;
-//     if (reg.test(message.data.text)) {
-//         content = message.data.text.match(reg)[1];
-//     }
-//     return content;
-// }
-
-
-
 module.exports.parse = function(sessionId, message) {
         // const messageContent = _parsePrefix(message);
         const messageContent = message.data.text;
